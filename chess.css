@@ -1,3 +1,8 @@
+* {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+
+}
+
 .chess-board {
     border: 1px solid black;
     border-collapse: collapse;
@@ -13,9 +18,23 @@
 }
 
 .chess-board .light { 
-    background: #eee; 
+    background: #8e9ffa; 
 }
             
 .chess-board .dark { 
-    background: #000; 
+    background: #1e2cec; 
+}
+
+.pieces {
+    margin: auto;
+    padding: 0;
+    background: none;
+}
+
+#classic {
+    display: block;
+}
+
+#blitz {
+    display: block;
 }
