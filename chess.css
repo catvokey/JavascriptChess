@@ -1,40 +1,78 @@
 * {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-
+    background-color: rgb(215, 223, 250);
+    color: #404cf3;
 }
 
 .chess-board {
     border: 1px solid black;
     border-collapse: collapse;
+    margin: auto;
 }
 .chess-board th { 
     padding: .5em; 
+    background-color: #aebafd;
 }
 
 .chess-board td { 
-    border: 1px solid; 
-    width: 4em; 
-    height: 4em; 
+    border: 1px solid black; 
+    width: 5em; 
+    height: 5em; 
 }
 
 .chess-board .light { 
-    background: #8e9ffa; 
+    background: #aebafd; 
 }
             
 .chess-board .dark { 
-    background: #1e2cec; 
+    background: #404cf3; 
 }
 
 .pieces {
     margin: auto;
     padding: 0;
     background: none;
+    font-size: 44pt;
+    color: black;
 }
 
 #classic {
     display: block;
+    margin: auto;
 }
 
 #blitz {
     display: block;
+    margin: auto;
+}
+
+h1 {
+    font-size: 30pt;
+}
+
+h2 {
+    margin-left: 600px;
+}
+
+button {
+    background-color: #404cf3;
+    width: 75px;
+    height: 40px;
+    font-size: 14pt;
+    border-radius: 10pt;
+    color:rgb(215, 223, 250);
+}
+
+button:hover {
+    color: #aebafd;
+    background-color: #6d76f1;
+}
+
+button:active {
+    color: #404cf3;
+    background-color: #aebafd;
+}
+
+#menu {
+    float: left;
 }
