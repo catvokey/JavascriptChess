@@ -141,5 +141,26 @@ const init_board = (board) => {
 const board = make_board();
 init_board(board);
 
+let current_piece = null;
+let current_player = "w";
+
+// handle clicking on a space on the chess board
+const selection = (event) => {
+    // get the space that was clicked
+    const selected_td = event.currentTarget;
+    // determine if this is a move or select or deselect click
+    //      deselect when they click the cell that contains the current piece
+    //      select when no current piece is selected
+    //      otherwise, attempt to move the piece
+    if (selected_td === ) {
+        
+    } else if (selected_td ===) {
+        
+    } else if () {
+
+    }
+
+}
+
 
 console.log(board);
