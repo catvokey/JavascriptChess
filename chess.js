@@ -44,7 +44,9 @@ const make_piece = (type, player, origin, current_pos) => {
 };
 
 const checkPawnMove = (cell_id, piece) => {
-
+    // get pawn position
+    // calculate allowed pawn moves
+    // check if cell_id in allowed moves
 };
 
 const checkRookMove = (cell_id, piece) => {
