@@ -44,8 +44,29 @@ const make_piece = (type, player, origin, current_pos) => {
 };
 
 const checkPawnMove = (cell_id, piece) => {
-    
+
 };
+
+const checkRookMove = (cell_id, piece) => {
+
+};
+
+const checkKnightMove = (cell_id, piece) => {
+
+};
+
+const checkBishopMove = (cell_id, piece) => {
+
+};
+
+const checkKingMove = (cell_id, piece) => {
+
+};
+
+const checkQueenMove = (cell_id, piece) => {
+
+};
+
 // check if attempted move is legal
 
 const checkMove = (cell_id, piece) => {
@@ -54,11 +75,30 @@ const checkMove = (cell_id, piece) => {
     if (piece.type === "pawn") {
         if (checkPawnMove(cell_id, piece)) {
             
-        }
+        };
+    } else if (piece.type === "rook") {
+        if (checkRookMove(cell_id, piece)) {
+            
+        };
+    } else if (piece.type === "knight") {
+        if (checkKnightMove(cell_id, piece)) {
+            
+        };
+    } else if (piece.type === "bishop") {
+        if (checkBishopMove(cell_id, piece)) {
+            
+        };
+    } else if (piece.type === "king") {
+        if (checkKingMove(cell_id, piece)) {
+            
+        };
+    } else if (piece.type === "queen") {
+        if (checkQueenMove(cell_id, piece)) {
+            
+        };
     } else {
         console.log("Invalid piece type.")
-    }
-    
+    };
 };
 
 // initialze board
