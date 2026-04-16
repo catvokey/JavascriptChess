@@ -191,6 +191,14 @@ const checkMove = (cell_id, piece) => {
     return moveList.includes(cell_id);
 };
 
+const change_player = () => {
+    if (current_player === "w") {
+        current_player = "b"
+    } else {
+        current_player = "w"
+    }
+}
+
 // initialze board
 
 const init_board = (board) => {
@@ -242,15 +250,14 @@ const selection = (event) => {
     //      deselect when they click the cell that contains the current piece
     //      select when no current piece is selected
     //      otherwise, attempt to move the piece
-    if (selected_td === ) {
-        
-    } else if (selected_td ===) {
-        
-    } else if () {
-
+    if (current_piece && selected_td.id === current_piece.current_pos) {
+        current_piece = null;
+    } else if (!current_piece) {
+        current_piece = getPiece(selected_td.id)
+    } else {
+        checkMove(selected_td.id, current_piece)
+        current_player = change_player(current_player)
     }
-
 }
-
 
 console.log(board);
