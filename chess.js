@@ -43,30 +43,128 @@ const make_piece = (type, player, origin, current_pos) => {
     };
 };
 
-const checkPawnMove = (cell_id, piece) => {
+const getPiece = (cell_id) => {
+    const [row, col] = cell_id.split("_");
+    return board[row][col];
+};
+
+// check for opponent piece in cell
+const checkForOpponent = (cell_id) => {
+    const piece = getPiece(cell_id);
+    return piece.player != current_player && piece.player != ""
+};
+
+// check if cell is empty
+const isCellEmpty = (cell_id) => {
+    const piece = getPiece(cell_id);
+    return piece.type === ""
+};
+
+
+const convertColToNum = (col) => {
+    if (col === "a") {
+        return 1;
+    } else if (col === "b") {
+        return 2;
+    } else if (col === "c") {
+        return 3;
+    } else if (col === "d") {
+        return 4;
+    } else if (col === "e") {
+        return 5;
+    } else if (col === "f") {
+        return 6;
+    } else if (col === "g") {
+        return 7;
+    } else if (col === "h") {
+        return 8;
+    };
+};
+
+const convertColToLetter = (col) => {
+    if (col === 1) {
+        return "a";
+    } else if (col === 2) {
+        return "b";
+    } else if (col === 3) {
+        return "c";
+    } else if (col === 4) {
+        return "d";
+    } else if (col === 5) {
+        return "e";
+    } else if (col === 6) {
+        return "f";
+    } else if (col === 7) {
+        return "g";
+    } else if (col === 8) {
+        return "h";
+    };
+}; 
+
+
+const checkPawnMove = (piece) => {
     // get pawn position
     // calculate allowed pawn moves
-    // check if cell_id in allowed moves
+    // pawns can move forward one space, or two spaces if they are in their starting 
+    // position. They can also capture diagonally one space forward.
+    const [row, col] = piece.current_pos.split("_");
+    const row_num = parseInt(row);
+    const col_num = convertColToNum(col);
+
+    const allowed_moves = [];
+    if (piece.current_pos === piece.origin) {
+        // can move forward one or two spaces
+        if (piece.player === "w") {
+            allowed_moves.push(`${row_num + 1}_${col}`);
+            allowed_moves.push(`${row_num + 2}_${col}`);
+        } else if (piece.player === "b") {
+            allowed_moves = [`${row_num - 1}_${col}`, `${row_num - 2}_${col}`];
+        };
+    } else if (piece.current_pos !== piece.origin) {
+        // can move forward one space and can capture diagonally one space forward
+        if (piece.player === "w") {
+            allowed_moves = [`${row_num + 1}_${col}`, `${row_num + 1}_${convertColToLetter(col_num + 1)}`, `${row_num + 1}_${convertColToLetter(col_num - 1)}`];
+        } else if (piece.player === "b") {
+            allowed_moves = [`${row_num - 1}_${col}`, `${row_num - 1}_${convertColToLetter(col_num + 1)}`, `${row_num - 1}_${convertColToLetter(col_num - 1)}`];
+        };
+    }
+    return allowed_moves;
 };
 
-const checkRookMove = (cell_id, piece) => {
+const checkRookMove = (piece) => {
+    // get rook position
+    // calculate allowed rook moves
+    // rooks can move any number of spaces left or right, or forward or backward, 
+    // but cannot jump over other pieces.
+
 
 };
 
-const checkKnightMove = (cell_id, piece) => {
+const checkKnightMove = (piece) => {
+    // get knight position
+    // calculate allowed knight moves
+    // knights can move in an L shape: two spaces in one direction and then one
+    // space perpendicular to that. They can jump over other pieces. horsey can jump
 
 };
 
-const checkBishopMove = (cell_id, piece) => {
+const checkBishopMove = (piece) => {
+    // get bishop position
+    // calculate allowed bishop moves
+    // bishops can move any number of spaces diagonally, but cannot jump over other pieces.
 
 };
 
-const checkKingMove = (cell_id, piece) => {
-
+const checkKingMove = (piece) => {
+    // get king position
+    // calculate allowed king moves
+    // kings can move one space in any direction, but cannot move into check.
 };
 
-const checkQueenMove = (cell_id, piece) => {
-
+const checkQueenMove = (piece) => {
+    // get queen position
+    // calculate allowed queen moves
+    // queens can move any number of spaces in any direction, but cannot jump over other pieces.
 };
 
 // check if attempted move is legal
@@ -74,33 +172,23 @@ const checkQueenMove = (cell_id, piece) => {
 const checkMove = (cell_id, piece) => {
     // check which piece is selected 
     // check what moves are allowed by piece
+    let moveList = [];
     if (piece.type === "pawn") {
-        if (checkPawnMove(cell_id, piece)) {
-            
-        };
+        moveList = checkPawnMove(piece)
     } else if (piece.type === "rook") {
-        if (checkRookMove(cell_id, piece)) {
-            
-        };
+        moveList = checkRookMove(piece)
     } else if (piece.type === "knight") {
-        if (checkKnightMove(cell_id, piece)) {
-            
-        };
+        moveList = checkKnightMove(piece)
     } else if (piece.type === "bishop") {
-        if (checkBishopMove(cell_id, piece)) {
-            
-        };
+        moveList = checkBishopMove(piece)
     } else if (piece.type === "king") {
-        if (checkKingMove(cell_id, piece)) {
-            
-        };
+        moveList = checkKingMove(piece)
     } else if (piece.type === "queen") {
-        if (checkQueenMove(cell_id, piece)) {
-            
-        };
+        moveList = checkQueenMove(piece)
     } else {
         console.log("Invalid piece type.")
     };
+    return moveList.includes(cell_id);
 };
 
 // initialze board
