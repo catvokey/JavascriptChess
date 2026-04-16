@@ -118,14 +118,19 @@ const checkPawnMove = (piece) => {
             allowed_moves.push(`${row_num + 1}_${col}`);
             allowed_moves.push(`${row_num + 2}_${col}`);
         } else if (piece.player === "b") {
-            allowed_moves = [`${row_num - 1}_${col}`, `${row_num - 2}_${col}`];
+            allowed_moves.push(`${row_num - 1}_${col}`);
+            allowed_moves.push(`${row_num - 2}_${col}`);
         };
     } else if (piece.current_pos !== piece.origin) {
         // can move forward one space and can capture diagonally one space forward
         if (piece.player === "w") {
-            allowed_moves = [`${row_num + 1}_${col}`, `${row_num + 1}_${convertColToLetter(col_num + 1)}`, `${row_num + 1}_${convertColToLetter(col_num - 1)}`];
+            allowed_moves.push(`${row_num + 1}_${col}`);
+            allowed_moves.push(`${row_num + 1}_${convertColToLetter(col_num + 1)}`);
+            allowed_moves.push(`${row_num + 1}_${convertColToLetter(col_num - 1)}`);
         } else if (piece.player === "b") {
-            allowed_moves = [`${row_num - 1}_${col}`, `${row_num - 1}_${convertColToLetter(col_num + 1)}`, `${row_num - 1}_${convertColToLetter(col_num - 1)}`];
+            allowed_moves.push(`${row_num - 1}_${col}`);
+            allowed_moves.push(`${row_num - 1}_${convertColToLetter(col_num + 1)}`);
+            allowed_moves.push(`${row_num - 1}_${convertColToLetter(col_num - 1)}`);
         };
     }
     return allowed_moves;
