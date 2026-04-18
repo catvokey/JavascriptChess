@@ -142,34 +142,101 @@ const checkRookMove = (piece) => {
     // rooks can move any number of spaces left or right, or forward or backward, 
     // but cannot jump over other pieces.
 
-
+    const [row, col] = piece.current_pos.split("_");
+    const row_num = parseInt(row);
+    const col_num = convertColToNum(col);
+    
+    const allowed_moves = [];
+    if (piece.player === "w") {
+        for (let i = col_num + 1; i <= 8; i++) {
+            allowed_moves.push(`${row}_${convertColToLetter(i)}`);
+        }
+        for (let i = row_num + 1; i <= 8; i++) {
+            allowed_moves.push(`${i}_${col}`);
+        }
+    } else if (piece.player === "b") {
+        for (let i = col_num - 1; i >= 1; i--) {
+            allowed_moves.push(`${row}_${convertColToLetter(i)}`);
+        }
+        for (let i = row_num - 1; i >= 1; i--) {
+            allowed_moves.push(`${i}_${col}`);
+        }
+    }
+    return allowed_moves;
 };
+
 
 const checkKnightMove = (piece) => {
     // get knight position
     // calculate allowed knight moves
     // knights can move in an L shape: two spaces in one direction and then one
     // space perpendicular to that. They can jump over other pieces. horsey can jump
+    const [row, col] = piece.current_pos.split("_");
+    const row_num = parseInt(row);
+    const col_num = convertColToNum(col);
 
+    const allowed_moves = [];
+    allowed_moves.push(`${row_num + 2}_${convertColToLetter(col_num + 1)}`);
+    allowed_moves.push(`${row_num + 2}_${convertColToLetter(col_num - 1)}`);
+    allowed_moves.push(`${row_num - 2}_${convertColToLetter(col_num + 1)}`);
+    allowed_moves.push(`${row_num - 2}_${convertColToLetter(col_num - 1)}`);
+    allowed_moves.push(`${row_num + 1}_${convertColToLetter(col_num + 2)}`);
+    allowed_moves.push(`${row_num + 1}_${convertColToLetter(col_num - 2)}`);
+    allowed_moves.push(`${row_num - 1}_${convertColToLetter(col_num + 2)}`);
+    allowed_moves.push(`${row_num - 1}_${convertColToLetter(col_num - 2)}`);
+    return allowed_moves;
 };
 
 const checkBishopMove = (piece) => {
     // get bishop position
     // calculate allowed bishop moves
     // bishops can move any number of spaces diagonally, but cannot jump over other pieces.
+    const [row, col] = piece.current_pos.split("_");
+    const row_num = parseInt(row);
+    const col_num = convertColToNum(col);
 
+    const allowed_moves = [];
+    for (let i = 1; i <= 8; i++) {
+        allowed_moves.push(`${row_num + i}_${convertColToLetter(col_num + i)}`);
+        allowed_moves.push(`${row_num + i}_${convertColToLetter(col_num - i)}`);
+        allowed_moves.push(`${row_num - i}_${convertColToLetter(col_num + i)}`);
+        allowed_moves.push(`${row_num - i}_${convertColToLetter(col_num - i)}`);
+    };
+    return allowed_moves;
 };
 
 const checkKingMove = (piece) => {
     // get king position
     // calculate allowed king moves
     // kings can move one space in any direction, but cannot move into check.
+    const [row, col] = piece.current_pos.split("_");
+    const row_num = parseInt(row);
+    const col_num = convertColToNum(col);
+
+    const allowed_moves = [];
+    allowed_moves.push(`${row_num + 1}_${convertColToLetter(col_num)}`);
+    allowed_moves.push(`${row_num - 1}_${convertColToLetter(col_num)}`);
+    allowed_moves.push(`${row_num}_${convertColToLetter(col_num + 1)}`);
+    allowed_moves.push(`${row_num}_${convertColToLetter(col_num - 1)}`);
+    allowed_moves.push(`${row_num + 1}_${convertColToLetter(col_num + 1)}`);
+    allowed_moves.push(`${row_num + 1}_${convertColToLetter(col_num - 1)}`);
+    allowed_moves.push(`${row_num - 1}_${convertColToLetter(col_num + 1)}`);
+    allowed_moves.push(`${row_num - 1}_${convertColToLetter(col_num - 1)}`);
+    return allowed_moves;
 };
 
 const checkQueenMove = (piece) => {
     // get queen position
     // calculate allowed queen moves
     // queens can move any number of spaces in any direction, but cannot jump over other pieces.
+    const [row, col] = piece.current_pos.split("_");
+    const row_num = parseInt(row);
+    const col_num = convertColToNum(col);
+
+    const allowed_moves = [];
+    checkRookMove(piece).forEach(move => allowed_moves.push(move));
+    checkBishopMove(piece).forEach(move => allowed_moves.push(move));
+    return allowed_moves;
 };
 
 // check if attempted move is legal
@@ -179,19 +246,80 @@ const checkMove = (cell_id, piece) => {
     // check what moves are allowed by piece
     let moveList = [];
     if (piece.type === "pawn") {
-        moveList = checkPawnMove(piece)
+        moveList = checkPawnMove(piece);
+        // check if move is in allowed moves
+        if (!moveList.includes(cell_id)) {
+            return false;
+        } else if (moveList.includes(cell_id) && isCellEmpty(cell_id)) {
+            return true;
+        } else if (moveList.includes(cell_id) && checkForOpponent(cell_id)) {
+            return true;
+        } else {
+            return false;
+        }
     } else if (piece.type === "rook") {
-        moveList = checkRookMove(piece)
+        moveList = checkRookMove(piece);
+        // check if move is in allowed moves and if there are pieces in the way
+        // if there are pieces in the path, check if they are opponent pieces and if the move is a capture
+        if (!moveList.includes(cell_id)) {
+            return false;
+        } else if (moveList.includes(cell_id) && isCellEmpty(cell_id)) {
+            return true;
+        } else if (moveList.includes(cell_id) && checkForOpponent(cell_id)) {
+            return true;
+        } else {
+            return false;
+        }
     } else if (piece.type === "knight") {
-        moveList = checkKnightMove(piece)
+        moveList = checkKnightMove(piece);
+        // check if move is in allowed moves and if the destination cell is empty or has an opponent piece
+        if (!moveList.includes(cell_id)) {
+            return false;
+        } else if (moveList.includes(cell_id) && isCellEmpty(cell_id)) {
+            return true;
+        } else if (moveList.includes(cell_id) && checkForOpponent(cell_id)) {
+            return true;
+        } else {
+            return false;
+        }
     } else if (piece.type === "bishop") {
-        moveList = checkBishopMove(piece)
+        moveList = checkBishopMove(piece);
+        // check if move is in allowed moves and if there are pieces in the way
+        // if there are pieces in the path, check if they are opponent pieces and if the move is a capture
+        if (!moveList.includes(cell_id)) {
+            return false;
+        } else if (moveList.includes(cell_id) && isCellEmpty(cell_id)) {
+            return true;
+        } else if (moveList.includes(cell_id) && checkForOpponent(cell_id)) {
+            return true;
+        } else {
+            return false;
+        }
     } else if (piece.type === "king") {
-        moveList = checkKingMove(piece)
+        moveList = checkKingMove(piece);
+        // check if move is in allowed moves and if the destination cell is empty or has an opponent piece
+        if (!moveList.includes(cell_id)) {
+            return false;
+        } else if (moveList.includes(cell_id) && isCellEmpty(cell_id)) {
+            return true;
+        } else if (moveList.includes(cell_id) && checkForOpponent(cell_id)) {
+            return true;
+        } else {
+            return false;
+        }
     } else if (piece.type === "queen") {
-        moveList = checkQueenMove(piece)
+        moveList = checkQueenMove(piece);
+        if (!moveList.includes(cell_id)) {
+            return false;
+        } else if (moveList.includes(cell_id) && isCellEmpty(cell_id)) {
+            return true;
+        } else if (moveList.includes(cell_id) && checkForOpponent(cell_id)) {
+            return true;
+        } else {
+            return false;
+        }
     } else {
-        console.log("Invalid piece type.")
+        console.log("Invalid piece type.");
     };
     return moveList.includes(cell_id);
 };
@@ -203,6 +331,37 @@ const change_player = () => {
         current_player = "w"
     }
 }
+
+// create timer for blitz chess
+
+const blitz_timer = (time) => {
+    let timer = time;
+    const timer_interval = setInterval(() => {
+        timer--;
+        if (timer === 0) {
+            clearInterval(timer_interval);
+            console.log("Time's up!");
+        }
+    }, 1000);
+}
+
+
+// event listener for choosing game mode (blitz or classic) depending on which button they click
+
+const blitz_button = document.getElementById("blitz_mode");
+const classic_button = document.getElementById("classic_mode");
+blitz_button.addEventListener("click", () => {
+    //change blitz display to "block"
+    document.getElementById("blitz").style.display = "block";
+    //start blitz timer
+    blitz_timer(300);   
+});
+classic_button.addEventListener("click", () => {
+    //change classic display to "block"
+    document.getElementById("classic").style.display = "block";
+});
+
+
 
 // initialze board
 
