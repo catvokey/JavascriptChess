@@ -474,10 +474,18 @@ const selection = (event) => {
     if (current_piece && selected_td.id === current_piece.current_pos) {
         current_piece = null;
     } else if (!current_piece) {
-        current_piece = getPiece(selected_td.id)
+        current_piece = getPiece(selected_td.id).piece
     } else {
-        checkMove(selected_td.id, current_piece)
-        current_player = change_player(current_player)
+        if (checkMove(selected_td.id, current_piece)) {
+            const old_pos = current_piece.current_pos
+            const empty_piece = make_piece("", "", "", old_pos)
+            current_piece.current_pos = selected_td.id
+            update_cell(old_pos, board, empty_piece)
+            update_cell(selected_td.id, board, current_piece)
+            current_piece = null
+            change_player()
+            console.log(board)
+        }
     }
 }
 
