@@ -347,20 +347,20 @@ const blitz_timer = (time) => {
 
 
 // event listener for choosing game mode (blitz or classic) depending on which button they click
-
-const blitz_button = document.getElementById("blitz_mode");
-const classic_button = document.getElementById("classic_mode");
-blitz_button.addEventListener("click", () => {
-    //change blitz display to "block"
-    document.getElementById("blitz").style.display = "block";
-    //start blitz timer
-    blitz_timer(300);   
+document.addEventListener("DOMContentLoaded", () => {
+    const blitz_button = document.getElementById("blitz_mode");
+    const classic_button = document.getElementById("classic_mode");
+    blitz_button.addEventListener("click", () => {
+        //change blitz display to "block"
+        document.getElementById("blitz").style.display = "block";
+        //start blitz timer
+        blitz_timer(300);   
+    });
+    classic_button.addEventListener("click", () => {
+        //change classic display to "block"
+        document.getElementById("classic").style.display = "block";
+    });
 });
-classic_button.addEventListener("click", () => {
-    //change classic display to "block"
-    document.getElementById("classic").style.display = "block";
-});
-
 
 
 // initialze board
@@ -417,10 +417,18 @@ const selection = (event) => {
     if (current_piece && selected_td.id === current_piece.current_pos) {
         current_piece = null;
     } else if (!current_piece) {
-        current_piece = getPiece(selected_td.id)
+        current_piece = getPiece(selected_td.id).piece
     } else {
-        checkMove(selected_td.id, current_piece)
-        current_player = change_player(current_player)
+        if (checkMove(selected_td.id, current_piece)) {
+            const old_pos = current_piece.current_pos
+            const empty_piece = make_piece("", "", "", old_pos)
+            current_piece.current_pos = selected_td.id
+            update_cell(old_pos, board, empty_piece)
+            update_cell(selected_td.id, board, current_piece)
+            current_piece = null
+            change_player()
+            console.log(board)
+        }
     }
 }
 
