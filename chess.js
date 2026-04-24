@@ -125,50 +125,50 @@ const checkPawnMove = (piece) => {
         if (piece.player === "w") {
             if (checkForOpponent(`${row_num + 1}_${col}`)) {
                 allowed_moves.push(`${row_num + 1}_${col}`);
-                break;
+                return;
             } else if (!isCellEmpty(`${row_num + 1}_${col}`)) {
-                break;
+                return;
             } else {
                 allowed_moves.push(`${row_num + 1}_${col}`);
             }
             if (checkForOpponent(`${row_num + 1}_${convertColToLetter(col_num + 1)}`)) {
                 allowed_moves.push(`${row_num + 1}_${convertColToLetter(col_num + 1)}`);
-                break;
+                return;
             } else if (!isCellEmpty(`${row_num + 1}_${convertColToLetter(col_num + 1)}`)) {
-                break;
+                return;
             } else {
                 allowed_moves.push(`${row_num + 1}_${convertColToLetter(col_num + 1)}`);
             }
             if (checkForOpponent(`${row_num + 1}_${convertColToLetter(col_num - 1)}`)) {
                 allowed_moves.push(`${row_num + 1}_${convertColToLetter(col_num - 1)}`);
-                break;
+                return;
             } else if (!isCellEmpty(`${row_num + 1}_${convertColToLetter(col_num - 1)}`)) {
-                break;
+                return;
             } else {
                 allowed_moves.push(`${row_num + 1}_${convertColToLetter(col_num - 1)}`);
             }
         } else if (piece.player === "b") {
             if (checkForOpponent(`${row_num - 1}_${col}`)) {
                 allowed_moves.push(`${row_num - 1}_${col}`);
-                break;
+                return;
             } else if (!isCellEmpty(`${row_num - 1}_${col}`)) {
-                break;
+                return;
             } else {
                 allowed_moves.push(`${row_num - 1}_${col}`);
             }
             if (checkForOpponent(`${row_num - 1}_${convertColToLetter(col_num + 1)}`)) {
                 allowed_moves.push(`${row_num - 1}_${convertColToLetter(col_num + 1)}`);
-                break;
+                return;
             } else if (!isCellEmpty(`${row_num - 1}_${convertColToLetter(col_num + 1)}`)) {
-                break;
+                return;
             } else {
                 allowed_moves.push(`${row_num - 1}_${convertColToLetter(col_num + 1)}`);
             }
             if (checkForOpponent(`${row_num - 1}_${convertColToLetter(col_num - 1)}`)) {
                 allowed_moves.push(`${row_num - 1}_${convertColToLetter(col_num - 1)}`);
-                break;
+                return;
             } else if (!isCellEmpty(`${row_num - 1}_${convertColToLetter(col_num - 1)}`)) {
-                break;
+                return;
             } else {
                 allowed_moves.push(`${row_num - 1}_${convertColToLetter(col_num - 1)}`);
             }
@@ -191,20 +191,20 @@ const checkRookMove = (piece) => {
     if (piece.player === "w") {
         for (let i = col_num + 1; i <= 8; i++) {
             if (checkForOpponent(`${row}_${convertColToLetter(i)}`)) {
-                break;
+                return;
             } else if (!isCellEmpty(`${row}_${convertColToLetter(i)}`)) {
                 allowed_moves.push(`${row}_${convertColToLetter(i)}`);
-                break;
+                return;
             } else {
                 allowed_moves.push(`${row}_${convertColToLetter(i)}`);
             }
         }
         for (let i = row_num + 1; i <= 8; i++) {
             if (checkForOpponent(`${i}_${col}`)) {
-                break;
+                return;
             } else if (!isCellEmpty(`${i}_${col}`)) {
                 allowed_moves.push(`${i}_${col}`);
-                break;
+                return;
             } else {
                 allowed_moves.push(`${i}_${col}`);
             }
@@ -212,17 +212,17 @@ const checkRookMove = (piece) => {
     } else if (piece.player === "b") {
         for (let i = col_num - 1; i >= 1; i--) {
             if (checkForOpponent(`${row}_${convertColToLetter(i)}`)) {
-                break;
+                return;
             } else if (!isCellEmpty(`${row}_${convertColToLetter(i)}`)) {
                 allowed_moves.push(`${row}_${convertColToLetter(i)}`);
-                break;
+                return;
             } else {
                 allowed_moves.push(`${row}_${convertColToLetter(i)}`);
             }
         }
         for (let i = row_num - 1; i >= 1; i--) {
              if (checkForOpponent(`${i}_${col}`)) {
-                break;
+                return;
             } else if (!isCellEmpty(`${i}_${col}`)) {
                 allowed_moves.push(`${i}_${col}`);
             } else {
@@ -275,9 +275,9 @@ const checkBishopMove = (piece) => {
     for (let i = 1; i <= 8; i++) {
         if (checkForOpponent(`${row_num + i}_${convertColToLetter(col_num + i)}`)) {
             allowed_moves.push(`${row_num + i}_${convertColToLetter(col_num + i)}`);
-            break;
+            return;
         } else if (!isCellEmpty(`${row_num + i}_${convertColToLetter(col_num + i)}`)) {
-            break;
+            return;
         } else {
             allowed_moves.push(`${row_num + i}_${convertColToLetter(col_num + i)}`);
         }
@@ -285,9 +285,9 @@ const checkBishopMove = (piece) => {
     for (let i = 1; i <= 8; i++) {
         if (checkForOpponent(`${row_num + i}_${convertColToLetter(col_num - i)}`)) {
             allowed_moves.push(`${row_num + i}_${convertColToLetter(col_num - i)}`);
-            break;
+            return;
         } else if (!isCellEmpty(`${row_num + i}_${convertColToLetter(col_num - i)}`)) {
-            break;
+            return;
         } else {
             allowed_moves.push(`${row_num + i}_${convertColToLetter(col_num - i)}`);
         }
@@ -295,9 +295,9 @@ const checkBishopMove = (piece) => {
     for (let i = 1; i <= 8; i++) {
         if (checkForOpponent(`${row_num - i}_${convertColToLetter(col_num + i)}`)) {
             allowed_moves.push(`${row_num - i}_${convertColToLetter(col_num + i)}`);
-            break;
+            return;
         } else if (!isCellEmpty(`${row_num - i}_${convertColToLetter(col_num + i)}`)) {
-            break;
+            return;
         } else {
             allowed_moves.push(`${row_num - i}_${convertColToLetter(col_num + i)}`);
         }
@@ -305,9 +305,9 @@ const checkBishopMove = (piece) => {
     for (let i = 1; i <= 8; i++) {
         if (checkForOpponent(`${row_num - i}_${convertColToLetter(col_num - i)}`)) {
             allowed_moves.push(`${row_num - i}_${convertColToLetter(col_num - i)}`);
-            break;
+            return;
         } else if (!isCellEmpty(`${row_num - i}_${convertColToLetter(col_num - i)}`)) {
-            break;
+            return;
         } else {
             allowed_moves.push(`${row_num - i}_${convertColToLetter(col_num - i)}`);
         }
