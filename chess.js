@@ -123,55 +123,13 @@ const checkPawnMove = (piece) => {
     } else if (piece.current_pos !== piece.origin) {
         // can move forward one space and can capture diagonally one space forward
         if (piece.player === "w") {
-            if (checkForOpponent(`${row_num + 1}_${col}`)) {
-                allowed_moves.push(`${row_num + 1}_${col}`);
-                return;
-            } else if (!isCellEmpty(`${row_num + 1}_${col}`)) {
-                return;
-            } else {
-                allowed_moves.push(`${row_num + 1}_${col}`);
-            }
-            if (checkForOpponent(`${row_num + 1}_${convertColToLetter(col_num + 1)}`)) {
-                allowed_moves.push(`${row_num + 1}_${convertColToLetter(col_num + 1)}`);
-                return;
-            } else if (!isCellEmpty(`${row_num + 1}_${convertColToLetter(col_num + 1)}`)) {
-                return;
-            } else {
-                allowed_moves.push(`${row_num + 1}_${convertColToLetter(col_num + 1)}`);
-            }
-            if (checkForOpponent(`${row_num + 1}_${convertColToLetter(col_num - 1)}`)) {
-                allowed_moves.push(`${row_num + 1}_${convertColToLetter(col_num - 1)}`);
-                return;
-            } else if (!isCellEmpty(`${row_num + 1}_${convertColToLetter(col_num - 1)}`)) {
-                return;
-            } else {
-                allowed_moves.push(`${row_num + 1}_${convertColToLetter(col_num - 1)}`);
-            }
+            allowed_moves.push(`${row_num + 1}_${col}`);
+            allowed_moves.push(`${row_num + 1}_${convertColToLetter(col_num + 1)}`);
+            allowed_moves.push(`${row_num + 1}_${convertColToLetter(col_num - 1)}`);
         } else if (piece.player === "b") {
-            if (checkForOpponent(`${row_num - 1}_${col}`)) {
-                allowed_moves.push(`${row_num - 1}_${col}`);
-                return;
-            } else if (!isCellEmpty(`${row_num - 1}_${col}`)) {
-                return;
-            } else {
-                allowed_moves.push(`${row_num - 1}_${col}`);
-            }
-            if (checkForOpponent(`${row_num - 1}_${convertColToLetter(col_num + 1)}`)) {
-                allowed_moves.push(`${row_num - 1}_${convertColToLetter(col_num + 1)}`);
-                return;
-            } else if (!isCellEmpty(`${row_num - 1}_${convertColToLetter(col_num + 1)}`)) {
-                return;
-            } else {
-                allowed_moves.push(`${row_num - 1}_${convertColToLetter(col_num + 1)}`);
-            }
-            if (checkForOpponent(`${row_num - 1}_${convertColToLetter(col_num - 1)}`)) {
-                allowed_moves.push(`${row_num - 1}_${convertColToLetter(col_num - 1)}`);
-                return;
-            } else if (!isCellEmpty(`${row_num - 1}_${convertColToLetter(col_num - 1)}`)) {
-                return;
-            } else {
-                allowed_moves.push(`${row_num - 1}_${convertColToLetter(col_num - 1)}`);
-            }
+            allowed_moves.push(`${row_num - 1}_${col}`);
+            allowed_moves.push(`${row_num - 1}_${convertColToLetter(col_num + 1)}`);
+            allowed_moves.push(`${row_num - 1}_${convertColToLetter(col_num - 1)}`);
         };
     }
     return allowed_moves;
@@ -190,44 +148,17 @@ const checkRookMove = (piece) => {
     const allowed_moves = [];
     if (piece.player === "w") {
         for (let i = col_num + 1; i <= 8; i++) {
-            if (checkForOpponent(`${row}_${convertColToLetter(i)}`)) {
-                return;
-            } else if (!isCellEmpty(`${row}_${convertColToLetter(i)}`)) {
-                allowed_moves.push(`${row}_${convertColToLetter(i)}`);
-                return;
-            } else {
-                allowed_moves.push(`${row}_${convertColToLetter(i)}`);
-            }
+            allowed_moves.push(`${row}_${convertColToLetter(i)}`);
         }
         for (let i = row_num + 1; i <= 8; i++) {
-            if (checkForOpponent(`${i}_${col}`)) {
-                return;
-            } else if (!isCellEmpty(`${i}_${col}`)) {
-                allowed_moves.push(`${i}_${col}`);
-                return;
-            } else {
-                allowed_moves.push(`${i}_${col}`);
-            }
+            allowed_moves.push(`${i}_${col}`);
         }
     } else if (piece.player === "b") {
         for (let i = col_num - 1; i >= 1; i--) {
-            if (checkForOpponent(`${row}_${convertColToLetter(i)}`)) {
-                return;
-            } else if (!isCellEmpty(`${row}_${convertColToLetter(i)}`)) {
-                allowed_moves.push(`${row}_${convertColToLetter(i)}`);
-                return;
-            } else {
-                allowed_moves.push(`${row}_${convertColToLetter(i)}`);
-            }
+            allowed_moves.push(`${row}_${convertColToLetter(i)}`);
         }
         for (let i = row_num - 1; i >= 1; i--) {
-             if (checkForOpponent(`${i}_${col}`)) {
-                return;
-            } else if (!isCellEmpty(`${i}_${col}`)) {
-                allowed_moves.push(`${i}_${col}`);
-            } else {
-                allowed_moves.push(`${i}_${col}`);
-            }
+            allowed_moves.push(`${i}_${col}`);
         }
     }
     return allowed_moves;
@@ -244,22 +175,14 @@ const checkKnightMove = (piece) => {
     const col_num = convertColToNum(col);
 
     const allowed_moves = [];
-    if (isCellEmpty(`${row_num + 2}_${convertColToLetter(col_num + 1)}`) || checkForOpponent(`${row_num + 2}_${convertColToLetter(col_num + 1)}`))
-        allowed_moves.push(`${row_num + 2}_${convertColToLetter(col_num + 1)}`);
-    if (isCellEmpty(`${row_num + 2}_${convertColToLetter(col_num - 1)}`) || checkForOpponent(`${row_num + 2}_${convertColToLetter(col_num - 1)}`))
-        allowed_moves.push(`${row_num + 2}_${convertColToLetter(col_num - 1)}`);
-    if (isCellEmpty(`${row_num - 2}_${convertColToLetter(col_num + 1)}`) || checkForOpponent(`${row_num - 2}_${convertColToLetter(col_num + 1)}`))
-        allowed_moves.push(`${row_num - 2}_${convertColToLetter(col_num + 1)}`);
-    if (isCellEmpty(`${row_num - 2}_${convertColToLetter(col_num - 1)}`) || checkForOpponent(`${row_num - 2}_${convertColToLetter(col_num - 1)}`))
-        allowed_moves.push(`${row_num - 2}_${convertColToLetter(col_num - 1)}`);
-    if (isCellEmpty(`${row_num + 1}_${convertColToLetter(col_num + 2)}`) || checkForOpponent(`${row_num + 1}_${convertColToLetter(col_num + 2)}`))
-        allowed_moves.push(`${row_num + 1}_${convertColToLetter(col_num + 2)}`);
-    if (isCellEmpty(`${row_num + 1}_${convertColToLetter(col_num - 2)}`) || checkForOpponent(`${row_num + 1}_${convertColToLetter(col_num - 2)}`))
-        allowed_moves.push(`${row_num + 1}_${convertColToLetter(col_num - 2)}`);
-    if (isCellEmpty(`${row_num - 1}_${convertColToLetter(col_num + 2)}`) || checkForOpponent(`${row_num - 1}_${convertColToLetter(col_num + 2)}`))
-        allowed_moves.push(`${row_num - 1}_${convertColToLetter(col_num + 2)}`);
-    if (isCellEmpty(`${row_num - 1}_${convertColToLetter(col_num - 2)}`) || checkForOpponent(`${row_num - 1}_${convertColToLetter(col_num - 2)}`))
-        allowed_moves.push(`${row_num - 1}_${convertColToLetter(col_num - 2)}`);
+    allowed_moves.push(`${row_num + 2}_${convertColToLetter(col_num + 1)}`);
+    allowed_moves.push(`${row_num + 2}_${convertColToLetter(col_num - 1)}`);
+    allowed_moves.push(`${row_num - 2}_${convertColToLetter(col_num + 1)}`);
+    allowed_moves.push(`${row_num - 2}_${convertColToLetter(col_num - 1)}`);
+    allowed_moves.push(`${row_num + 1}_${convertColToLetter(col_num + 2)}`);
+    allowed_moves.push(`${row_num + 1}_${convertColToLetter(col_num - 2)}`);
+    allowed_moves.push(`${row_num - 1}_${convertColToLetter(col_num + 2)}`);
+    allowed_moves.push(`${row_num - 1}_${convertColToLetter(col_num - 2)}`);
     return allowed_moves;
 };
 
@@ -273,44 +196,10 @@ const checkBishopMove = (piece) => {
 
     const allowed_moves = [];
     for (let i = 1; i <= 8; i++) {
-        if (checkForOpponent(`${row_num + i}_${convertColToLetter(col_num + i)}`)) {
-            allowed_moves.push(`${row_num + i}_${convertColToLetter(col_num + i)}`);
-            return;
-        } else if (!isCellEmpty(`${row_num + i}_${convertColToLetter(col_num + i)}`)) {
-            return;
-        } else {
-            allowed_moves.push(`${row_num + i}_${convertColToLetter(col_num + i)}`);
-        }
-    }
-    for (let i = 1; i <= 8; i++) {
-        if (checkForOpponent(`${row_num + i}_${convertColToLetter(col_num - i)}`)) {
-            allowed_moves.push(`${row_num + i}_${convertColToLetter(col_num - i)}`);
-            return;
-        } else if (!isCellEmpty(`${row_num + i}_${convertColToLetter(col_num - i)}`)) {
-            return;
-        } else {
-            allowed_moves.push(`${row_num + i}_${convertColToLetter(col_num - i)}`);
-        }
-    }
-    for (let i = 1; i <= 8; i++) {
-        if (checkForOpponent(`${row_num - i}_${convertColToLetter(col_num + i)}`)) {
-            allowed_moves.push(`${row_num - i}_${convertColToLetter(col_num + i)}`);
-            return;
-        } else if (!isCellEmpty(`${row_num - i}_${convertColToLetter(col_num + i)}`)) {
-            return;
-        } else {
-            allowed_moves.push(`${row_num - i}_${convertColToLetter(col_num + i)}`);
-        }
-    }
-    for (let i = 1; i <= 8; i++) {
-        if (checkForOpponent(`${row_num - i}_${convertColToLetter(col_num - i)}`)) {
-            allowed_moves.push(`${row_num - i}_${convertColToLetter(col_num - i)}`);
-            return;
-        } else if (!isCellEmpty(`${row_num - i}_${convertColToLetter(col_num - i)}`)) {
-            return;
-        } else {
-            allowed_moves.push(`${row_num - i}_${convertColToLetter(col_num - i)}`);
-        }
+        allowed_moves.push(`${row_num + i}_${convertColToLetter(col_num + i)}`);
+        allowed_moves.push(`${row_num + i}_${convertColToLetter(col_num - i)}`);
+        allowed_moves.push(`${row_num - i}_${convertColToLetter(col_num + i)}`);
+        allowed_moves.push(`${row_num - i}_${convertColToLetter(col_num - i)}`);
     };
     return allowed_moves;
 };
@@ -324,22 +213,14 @@ const checkKingMove = (piece) => {
     const col_num = convertColToNum(col);
 
     const allowed_moves = [];
-    if (checkForOpponent(`${row_num + 1}_${convertColToLetter(col_num)}`) || isCellEmpty(`${row_num + 1}_${convertColToLetter(col_num)}`)) 
-        allowed_moves.push(`${row_num + 1}_${convertColToLetter(col_num)}`);
-    if (checkForOpponent(`${row_num - 1}_${convertColToLetter(col_num)}`) || isCellEmpty(`${row_num - 1}_${convertColToLetter(col_num)}`)) 
-        allowed_moves.push(`${row_num - 1}_${convertColToLetter(col_num)}`);
-    if (checkForOpponent(`${row_num}_${convertColToLetter(col_num + 1)}`) || isCellEmpty(`${row_num}_${convertColToLetter(col_num + 1)}`)) 
-        allowed_moves.push(`${row_num}_${convertColToLetter(col_num + 1)}`);
-    if (checkForOpponent(`${row_num}_${convertColToLetter(col_num - 1)}`) || isCellEmpty(`${row_num}_${convertColToLetter(col_num - 1)}`)) 
-        allowed_moves.push(`${row_num}_${convertColToLetter(col_num - 1)}`);
-    if (checkForOpponent(`${row_num + 1}_${convertColToLetter(col_num + 1)}`) || isCellEmpty(`${row_num + 1}_${convertColToLetter(col_num + 1)}`)) 
-        allowed_moves.push(`${row_num + 1}_${convertColToLetter(col_num + 1)}`);
-    if (checkForOpponent(`${row_num + 1}_${convertColToLetter(col_num - 1)}`) || isCellEmpty(`${row_num + 1}_${convertColToLetter(col_num - 1)}`)) 
-        allowed_moves.push(`${row_num + 1}_${convertColToLetter(col_num - 1)}`);
-    if (checkForOpponent(`${row_num - 1}_${convertColToLetter(col_num + 1)}`) || isCellEmpty(`${row_num - 1}_${convertColToLetter(col_num + 1)}`)) 
-        allowed_moves.push(`${row_num - 1}_${convertColToLetter(col_num + 1)}`);
-    if (checkForOpponent(`${row_num - 1}_${convertColToLetter(col_num - 1)}`) || isCellEmpty(`${row_num - 1}_${convertColToLetter(col_num - 1)}`)) 
-        allowed_moves.push(`${row_num - 1}_${convertColToLetter(col_num - 1)}`);
+    allowed_moves.push(`${row_num + 1}_${convertColToLetter(col_num)}`);
+    allowed_moves.push(`${row_num - 1}_${convertColToLetter(col_num)}`);
+    allowed_moves.push(`${row_num}_${convertColToLetter(col_num + 1)}`);
+    allowed_moves.push(`${row_num}_${convertColToLetter(col_num - 1)}`);
+    allowed_moves.push(`${row_num + 1}_${convertColToLetter(col_num + 1)}`);
+    allowed_moves.push(`${row_num + 1}_${convertColToLetter(col_num - 1)}`);
+    allowed_moves.push(`${row_num - 1}_${convertColToLetter(col_num + 1)}`);
+    allowed_moves.push(`${row_num - 1}_${convertColToLetter(col_num - 1)}`);
     return allowed_moves;
 };
 
@@ -360,29 +241,86 @@ const checkQueenMove = (piece) => {
 // check if attempted move is legal
 
 const checkMove = (cell_id, piece) => {
+    // check which piece is selected 
+    // check what moves are allowed by piece
     let moveList = [];
     if (piece.type === "pawn") {
         moveList = checkPawnMove(piece);
-        return moveList.includes(cell_id)
+        // check if move is in allowed moves
+        if (!moveList.includes(cell_id)) {
+            return false;
+        } else if (moveList.includes(cell_id) && isCellEmpty(cell_id)) {
+            return true;
+        } else if (moveList.includes(cell_id) && checkForOpponent(cell_id)) {
+            return true;
+        } else {
+            return false;
+        }
     } else if (piece.type === "rook") {
         moveList = checkRookMove(piece);
-        return moveList.includes(cell_id)
+        // check if move is in allowed moves and if there are pieces in the way
+        // if there are pieces in the path, check if they are opponent pieces and if the move is a capture
+        if (!moveList.includes(cell_id)) {
+            return false;
+        } else if (moveList.includes(cell_id) && isCellEmpty(cell_id)) {
+            return true;
+        } else if (moveList.includes(cell_id) && checkForOpponent(cell_id)) {
+            return true;
+        } else {
+            return false;
+        }
     } else if (piece.type === "knight") {
         moveList = checkKnightMove(piece);
-
-        return moveList.includes(cell_id)
+        // check if move is in allowed moves and if the destination cell is empty or has an opponent piece
+        if (!moveList.includes(cell_id)) {
+            return false;
+        } else if (moveList.includes(cell_id) && isCellEmpty(cell_id)) {
+            return true;
+        } else if (moveList.includes(cell_id) && checkForOpponent(cell_id)) {
+            return true;
+        } else {
+            return false;
+        }
     } else if (piece.type === "bishop") {
         moveList = checkBishopMove(piece);
-        return moveList.includes(cell_id)
+        // check if move is in allowed moves and if there are pieces in the way
+        // if there are pieces in the path, check if they are opponent pieces and if the move is a capture
+        if (!moveList.includes(cell_id)) {
+            return false;
+        } else if (moveList.includes(cell_id) && isCellEmpty(cell_id)) {
+            return true;
+        } else if (moveList.includes(cell_id) && checkForOpponent(cell_id)) {
+            return true;
+        } else {
+            return false;
+        }
     } else if (piece.type === "king") {
         moveList = checkKingMove(piece);
-        return moveList.includes(cell_id)
+        // check if move is in allowed moves and if the destination cell is empty or has an opponent piece
+        if (!moveList.includes(cell_id)) {
+            return false;
+        } else if (moveList.includes(cell_id) && isCellEmpty(cell_id)) {
+            return true;
+        } else if (moveList.includes(cell_id) && checkForOpponent(cell_id)) {
+            return true;
+        } else {
+            return false;
+        }
     } else if (piece.type === "queen") {
         moveList = checkQueenMove(piece);
-        return moveList.includes(cell_id)
+        if (!moveList.includes(cell_id)) {
+            return false;
+        } else if (moveList.includes(cell_id) && isCellEmpty(cell_id)) {
+            return true;
+        } else if (moveList.includes(cell_id) && checkForOpponent(cell_id)) {
+            return true;
+        } else {
+            return false;
+        }
     } else {
         console.log("Invalid piece type.");
     };
+    return moveList.includes(cell_id);
 };
 
 const change_player = () => {
@@ -391,7 +329,7 @@ const change_player = () => {
     } else {
         current_player = "w"
     }
-};
+}
 
 // create timer for blitz chess
 
@@ -401,24 +339,28 @@ const blitz_timer = (time) => {
         timer--;
         if (timer === 0) {
             clearInterval(timer_interval);
+            console.log("Time's up!");
         }
     }, 1000);
-};
+}
+
 
 // event listener for choosing game mode (blitz or classic) depending on which button they click
-
 document.addEventListener("DOMContentLoaded", () => {
     const blitz_button = document.getElementById("blitz_mode");
     const classic_button = document.getElementById("classic_mode");
     blitz_button.addEventListener("click", () => {
+        //change blitz display to "block"
         document.getElementById("blitz").style.display = "block";
-        document.getElementById("classic").style.display = "none";
+        //start blitz timer
+        blitz_timer(300);   
     });
     classic_button.addEventListener("click", () => {
+        //change classic display to "block"
         document.getElementById("classic").style.display = "block";
-        document.getElementById("blitz").style.display = "none";
     });
 });
+
 
 // initialze board
 
@@ -483,7 +425,7 @@ const selection = (event) => {
             update_cell(old_pos, board, empty_piece)
             update_cell(selected_td.id, board, current_piece)
             current_piece = null
-            change_player()
+            current_player = change_player()
             console.log(board)
         }
     }
